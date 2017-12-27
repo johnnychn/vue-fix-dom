@@ -69,6 +69,10 @@
             scroll: {
                 type: Boolean,
                 default: false
+            },
+            transitionTime:{
+                type: String,
+                default: '0s'
             }
         },
         data: function () {
@@ -156,6 +160,10 @@
             let self = this;
             this.parent = this.$refs.parent;
             this.child = this.$refs.child;
+
+            _cssToDom(this.child,fixCss('transition-property','transform,width'));
+            _cssToDom(this.child,fixCss('transition-duration',this.transitionTime));
+
             self.update();
             window.onresize = function () {
                 self.update();
