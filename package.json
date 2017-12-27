@@ -1,7 +1,9 @@
 {
-  "name": "VueFixDom",
+  "name": "vue-fix-dom",
+  "version":"1.0.1",
   "description": "resize dom to fix parent dom",
   "author": "johnnyGoo <157781745@qq.com>",
+  "main":"dist/vue-fix-dom.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --host 192.168.1.105 --port 8999",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"

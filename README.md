@@ -1,4 +1,13 @@
 
+###Usage
+```
+npm install vue-fix-dom --save
+```
+```javascript
+import VueFixDom from 'vue-fix-dom'
+```
+
+
 ###props:
 ```
 align:String 'align'/'default'
