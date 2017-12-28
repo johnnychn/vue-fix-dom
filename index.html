@@ -27,10 +27,10 @@
 </style>
 <body>
 <div id="app">
-    <vue-fix-dom ref="fixdom" align="crop">
-        <slot>
-            <img style="display: block;width:100%" src="http://h5.2smart.cn/2017/sharp/images/index_bg.jpg"  @load="update" />
-        </slot>
+    <vue-fix-dom ref="fixdom" align="crop" width="auto" height="auto">
+
+            <img style="display: block;" width="100%" src="http://h5.2smart.cn/2017/sharp/images/index_bg.jpg"  @load="update" />
+
     </vue-fix-dom>
 </div>
 

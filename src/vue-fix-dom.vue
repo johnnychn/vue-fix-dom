@@ -1,5 +1,5 @@
 <template>
-    <div ref="parent" style="width: 100%;height: 100%;overflow: hidden;position: relative">
+    <div ref="parent" style="width: 100%;height: 100%;position: relative">
         <div ref="child" :style="{'width':width,height:height}">
             <slot>
 
@@ -16,14 +16,23 @@
     }
 </style>
 
-
-/*!
-* vue-keyframe-animation v0.0.1 (https://github.com/johnnyGoo/vue-movieclip)
-* Author: Johnny chen
-*
-* Copyright 2013-2016 Johnny chen
-*/
 <script>
+
+    function bindEvent (dom, event, cb, useCapture) {
+        function remove() {
+            dom.removeEventListener(event, icc, useCapture)
+        }
+
+        function icc(e) {
+            if (cb(e) == true) {
+                remove();
+            }
+        }
+
+        dom.addEventListener(event, icc, useCapture);
+        return remove;
+    };
+
     function _cssToDom(el, obj) {
         if (!el) {
             return
@@ -60,24 +69,26 @@
             },
             width: {
                 type: String,
-                default: 'auto'
+                default: '320px'
             },
             height: {
                 type: String,
-                default: 'auto'
+                default: '640px'
             },
             scroll: {
                 type: Boolean,
                 default: false
             },
-            transitionTime:{
+            transitionTime: {
                 type: String,
                 default: '0s'
             }
         },
         data: function () {
             return {
-                child: null, parent: null
+                child: null, parent: null,eventRemoveHandle:function () {
+                    
+                }
             }
         },
         watch: {
@@ -93,30 +104,31 @@
         },
         methods: {
             update: function () {
-                _cssToDom(this.child,fixCss('transform-origin','0% 0%'));
-                _cssToDom(this.child,fixCss('transform','translate(0,0) scale(1,1)'));
 
-                let width = this.parent.clientWidth;
-                let height = this.parent.clientHeight;
+                let self = this;
+                let width = self.parent.clientWidth;
+                let height = self.parent.clientHeight;
+
+
                 let radio = width / height;
                 let cut_w, cut_h;
 
-                if (this.width === 'auto') {
-                    cut_w = this.child.clientWidth;
+                if (self.width === 'auto') {
+                    cut_w = self.child.clientWidth;
                 } else {
                     cut_w = Number(this.width.replace('px', ''))
                 }
-                if (this.width === 'auto') {
-                    cut_h = this.child.clientHeight;
+                if (self.width === 'auto') {
+                    cut_h = self.child.clientHeight;
                 } else {
-                    cut_h = Number(this.height.replace('px', ''))
+                    cut_h = Number(self.height.replace('px', ''))
                 }
 
 
                 let radio2 = cut_w / cut_h;
                 let end_w, end_h;
 
-                switch (this.align) {
+                switch (self.align) {
                     case 'crop':
                         if (radio2 > radio) {
                             end_h = height;
@@ -137,22 +149,25 @@
                         }
                         break;
                 }
-                end_w=Math.ceil(end_w);
-                end_h=Math.ceil(end_h);
+                end_w = Math.ceil(end_w);
+                end_h = Math.ceil(end_h);
 
-                let mov_x=-Math.ceil((end_w - width) / 2) + 'px';
-                let mov_y= -Math.ceil((end_h - height) / 2) + 'px';
-                let scale=end_w/cut_w;
+                let mov_x = -Math.ceil((end_w - width) / 2) + 'px';
+                let mov_y = -Math.ceil((end_h - height) / 2) + 'px';
+                let scale = Math.min(end_w / cut_w);
 
 
-                _cssToDom(this.child,fixCss('transform-origin','0% 0%'));
+                _cssToDom(self.child, fixCss('transform-origin', '0% 0%'));
 
-                _cssToDom(this.child,fixCss('transform','translate('+mov_x+','+mov_y+') scale('+scale+','+scale+')'));
-                //
-                // this.child.width = end_w + 'px';
-                // this.child.height = end_h + 'px';
+                _cssToDom(self.child, fixCss('transform', 'translate(' + mov_x + ',' + mov_y + ') scale('+scale+') '));
+
+
 
             }
+        },
+        
+        beforeDestroy:function () {
+            this.eventRemoveHandle()
         },
 
 
@@ -160,14 +175,13 @@
             let self = this;
             this.parent = this.$refs.parent;
             this.child = this.$refs.child;
-
-            _cssToDom(this.child,fixCss('transition-property','transform,width'));
-            _cssToDom(this.child,fixCss('transition-duration',this.transitionTime));
+            _cssToDom(this.child, fixCss('transition-property', 'transform,width'));
+            _cssToDom(this.child, fixCss('transition-duration', this.transitionTime));
 
             self.update();
-            window.onresize = function () {
+            self.eventRemoveHandle=bindEvent(window, 'resize', function () {
                 self.update();
-            };
+            })
             if (false === this.scroll) {
                 this.parent.setAttribute('ontouchmove', 'event.preventDefault();');
             }
