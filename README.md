@@ -10,7 +10,7 @@ import VueFixDom from 'vue-fix-dom'
 
 ###props:
 ```
-align:String 'align'/'default'
+align:String 'default'/'crop'
 width:String 'auto'/'*px' //只支持px后缀
 height:String 'auto'/'*px' //只支持px后缀
 scroll:Boolean false/true //是否允许浏览器默认滑动
