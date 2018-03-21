@@ -1,6 +1,6 @@
 {
   "name": "vue-fix-dom",
-  "version":"1.0.2",
+  "version":"1.0.31",
   "description": "resize dom to fix parent dom",
   "author": "johnnyGoo <157781745@qq.com>",
   "main":"dist/vue-fix-dom.js",

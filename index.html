@@ -27,9 +27,9 @@
 </style>
 <body>
 <div id="app">
-    <vue-fix-dom ref="fixdom" align="crop" width="auto" height="auto">
+    <vue-fix-dom ref="fixdom" align="crop" fixed="100 100" width="750px" height="1206px" :scroll="false">
 
-            <img style="display: block;" width="100%" src="http://h5.2smart.cn/2017/sharp/images/index_bg.jpg"  @load="update" />
+            <img style="display: block;margin-left: -50px"  width="850"  src="http://h5.2smart.cn/2017/sharp/images/index_bg.jpg"  @load="update" />
 
     </vue-fix-dom>
 </div>

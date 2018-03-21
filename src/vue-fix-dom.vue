@@ -67,6 +67,11 @@
                 type: String,
                 default: 'default'
             },
+            fixed:{
+                type: String,
+                default: 'center'
+            },
+
             width: {
                 type: String,
                 default: '320px'
@@ -152,8 +157,48 @@
                 end_w = Math.ceil(end_w);
                 end_h = Math.ceil(end_h);
 
-                let mov_x = -Math.ceil((end_w - width) / 2) + 'px';
-                let mov_y = -Math.ceil((end_h - height) / 2) + 'px';
+                let mov_x, mov_y ;
+                switch (self.fixed) {
+                    case 'bottom':
+                        mov_x = -Math.ceil((end_w - width) / 2) + 'px';
+                        mov_y = -Math.ceil((end_h - height) ) + 'px';
+                        break;
+                    case 'top':
+                        mov_x = -Math.ceil((end_w - width) / 2) + 'px';
+                        mov_y = 0 + 'px';
+                        break;
+                    case 'left':
+                        mov_x = 0 + 'px';
+                        mov_y = -Math.ceil((end_h - height)/2 ) + 'px';
+                        break;
+                    case 'right':
+                        mov_x = -Math.ceil((end_w - width) ) + 'px';
+                        mov_y = -Math.ceil((end_h - height)/2 ) + 'px';
+                        break;
+                    case 'center':
+                        mov_x = -Math.ceil((end_w - width) / 2) + 'px';
+                        mov_y = -Math.ceil((end_h - height) / 2) + 'px';
+                        break;
+                    default:
+                        if(self.fixed.indexOf(' '>0)){
+                            let pos=self.fixed.split(' ')
+                            mov_x = -Math.ceil((end_w - width)*Number(pos[0])/100) + 'px';
+                            mov_y = -Math.ceil((end_h - height) *Number(pos[1])/100) + 'px';
+
+                        }else{
+                            mov_x = -Math.ceil((end_w - width) / 2) + 'px';
+                            mov_y = -Math.ceil((end_h - height) / 2) + 'px';
+                        }
+
+
+
+
+                        break
+
+                }
+
+
+
                 let scale = Math.min(end_w / cut_w);
 
 
